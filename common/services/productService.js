@@ -23,7 +23,7 @@
         function calculateMarginAmount(price, cost) {
             var margin = 0;
             if(price && cost){
-                margin = price = cost;
+                margin = price - cost;
             }
             return margin;
         }
@@ -39,7 +39,7 @@
 
         function calculatePriceFromAmount(cost, amount) {
             var price = cost;
-            if (cost && percent){
+            if (cost && amount){
                 price = cost + amount;
                 price = (Math.round(price * 100)) / 100;
             }

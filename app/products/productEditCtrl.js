@@ -7,14 +7,18 @@
     angular
         .module("productManagement")
         .controller("ProductEditCtrl",
-        ["product", "$state",
+        ["product", "$state", "productService",
             ProductEditCtrl]);
 
-    function ProductEditCtrl(product, $state){
+    function ProductEditCtrl(product, $state, productService){
         var vm = this;
 
         vm.product = product;
+        vm.priceOption = "percent";
 
+        vm.marginPercent = function () {
+            return productService.calculateMarginPercent(vm.product.price, vm.product.cost);
+        }
         if(vm.product && vm.product.productId){
             vm.title = "Edit: " + vm.product.productName;
         }
@@ -22,6 +26,19 @@
             vm.title = "New Product"
         }
 
+        vm.calculatePrice = function () {
+            var price = 0;
+
+            if(vm.priceOption == 'amount'){
+                price = productService.calculatePriceFromAmount(vm.product.cost, vm.markupAmount);
+            }
+
+            if(vm.priceOption == 'percent'){
+                price = productService.calculatePriceFromPercent(vm.product.cost,vm.markupPercent);
+            }
+
+            vm.product.price = price;
+        };
         vm.open = function ($event) {
             $event.preventDefault();
             $event.stopPropagation();

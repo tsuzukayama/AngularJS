@@ -7,6 +7,7 @@
                             ["common.services",
                              "ui.router",
                              "ui.mask",
+                             "angularCharts",
                              "ui.bootstrap",
                              "productResourceMock"]);
 
@@ -68,8 +69,18 @@
                         }
                     }
                 })
+                .state("priceAnalytics",{
+                    url: "/priceAnalytics",
+                    templateUrl: "app/prices/priceAnalyticsView.html",
+                    controller: "PriceAnalyticsCtrl",
+                    resolve: {
+                        productResource: "productResource",
 
-
+                        products: function (productResource){
+                            return productResource.query().$promise;
+                        }
+                    }
+                })
         }]
     );
 }());
